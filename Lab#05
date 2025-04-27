@@ -1,0 +1,129 @@
+Task#01
+.model small
+.stack 100h
+.data
+.code
+main proc
+    ;Read first digit
+    MOV AH,1h
+    INT 21h
+    MOV BL,AL
+    
+    ;Read second digit
+    MOV AH,1h
+    INT 21h
+    MOV BH,AL
+    
+    ;display the reversed order
+    MOV DL,BH
+    MOV AH,2h
+    INT 21h
+    
+    ;display first digit second
+    MOV DL,BL
+    MOV AH,2h
+    INT 21h
+    
+    MOV AH,4ch
+    INT 21h
+    
+    main endp
+end main
+
+Task#02
+.model small
+.stack 100h
+.data
+.code  
+
+main proc
+  mov al, 4
+  
+  add al,5
+  
+  sub al,2
+  
+  add al,30h
+  
+  mov dl,al
+  mov ah,2h
+  int 21h
+  
+  mov ah,4ch
+  int 21h    
+
+main endp
+end main
+
+Task#03
+.model small
+.stack 100h
+ .data
+ .code
+ main proc
+    MOV AX,3                 ;Load 3 into AX
+    ADD AX,5                 ;Add 5(AX=3+5==8)
+    SUB AX,6                 ;Subtract(8-6=2==AX) 
+   ADD AL,30h            ;Convert to ASCII
+    MOV DL, AL
+    MOV AH,2h
+    INT 21h
+    main endp
+ end main
+
+Task#04
+.model small
+.stack 100h
+.data
+.code
+main proc
+    
+    MOV AH,1h
+    INT 21h
+    MOV BL,AL
+    
+    
+    MOV AH,1h
+    INT 21h
+    MOV BH,AL  
+          
+    XCHG BL,BH
+    
+    MOV DL,BL
+    MOV AH,2h
+    INT 21h
+    
+    
+    MOV DL,BH
+    MOV AH,2h
+    INT 21h
+    
+    MOV AH,4ch
+    INT 21h
+    
+    main endp
+    end main
+
+.model small
+.stack 100h
+.data
+.code
+main proc
+MOV AH, 1h
+INT 21h
+SUB AH,30h
+MOV BL,AL
+
+MOV CL,AL
+ADD AL,BL
+
+ADD AH,30h
+MOV DL,AL
+MOV AH,2h
+INT 21h
+
+MOV AH,4ch
+INT 21h
+
+main endp
+end main
