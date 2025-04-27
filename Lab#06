@@ -1,0 +1,151 @@
+Task#01:
+.model small
+.stack 100h
+.data
+; Defining the CV text (biodata)
+    name db "Name: Mahtab Mazhar", ‘$’
+    email db "Email: mahtabmazhar1004@gmail.com",’$’
+    phone db "Phone: 0328 8362981", ‘$’
+    address db "Address: 1234 Main St, Rawalpindi, Pakistan",’$’
+    skills db "Skills: Assembly, C, Linux Programming",’$’
+    experience db "Experience: 1+ years in software development",’$’
+    education db "Education: B.Sc. in Software Engineering",’$’
+    hobbies db "Hobbies: Reading, Programming, Traveling",’$’
+   .code
+   main proc
+    ; Print CV Title
+    mov ax,@data          
+    mov ds,ax       
+    mov dx,offset name_msg
+    mov ah,9
+    INT 21h
+    ; Print Name
+    mov dx,offset name
+    mov ah,9
+    INT 21h
+    ; Print Email
+    mov dx,offset email
+    mov ah,9
+    INT 21h
+    ; Print Phone
+    mov dx,offset phone
+    mov ah,9
+    INT 21h
+    ; Print Address
+    mov dx,offset address
+    mov ah,9
+    INT 21h
+    ; Print Skills
+   mov dx,offset skills
+    mov ah,9
+    INT 21h
+    ; Print Experience
+    mov dx,offset experience
+    mov ah,9
+    INT 21h
+    ; Print Education
+   mov dx,offset education
+    mov ah,9
+    INT 21h
+    ; Print Hobbies
+   mov dx,offset hobbies
+    mov ah,9
+    INT 21h
+    ; Exit the program
+MOV AH,4ch
+INT 21h
+main endp
+end main
+
+Task#02
+.model small
+.stack 100h
+.data
+ msg1 db ,'Enter a lowercase character:$'
+ msg2 db ,'The uppercase character is:$'
+ char db ?,'$'
+ newline db 13,10 '$'
+ .code
+ main proc
+    mov ax,@data
+    mov ds,ax
+   
+   mov dx,offset msg1
+   mov ah,9
+   int 21h
+   
+   mov ah,1h
+   int 21h
+   mov char,al
+   
+   mov dx,offset newline
+   mov ah,9
+   int 21h
+   
+   cmp char, 'a'
+   jl skip_conversion
+   cmp char, 'b'
+   jg skip_conversion
+   
+   sub char,32
+   
+   mov dx,offset msg2
+   mov ah,9
+   int 21h
+   
+   mov ah,2
+   mov dl,char
+   int 21h
+   
+   mov dx,offset newline
+   mov ah,9
+   int 21h
+   
+   mov ah,4ch
+   int 21h
+   main endp
+ end main
+
+Task#03
+.model small
+.stack 100h
+.data
+ msg1 db ,'Enter a character:$'
+ msg2 db ,'The user entered a character is:$'
+ char db ?,'$'
+ msg3  db ,'character.$' ,13,10,'$'
+ .code
+ main proc
+    mov ax,@data
+    mov ds,ax
+   
+   mov dx,offset msg1
+   mov ah,9
+   int 21h
+   
+   mov ah,1h
+   int 21h
+   mov char,al
+   
+   mov ah,2
+   mov dl,13
+   int 21h
+   mov dl,10
+   int 21h
+   
+   mov dx,offset msg2
+   mov ah,9
+   int 21h
+   
+   mov ah,2
+   mov dl,char
+   int 21h
+   
+   mov dx,offset msg3
+   mov ah,9
+   int 21h
+   
+   mov ah,4ch
+   int 21h
+   main endp
+ end main
