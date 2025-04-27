@@ -1,0 +1,179 @@
+Task#01
+.model small
+.stack 100h
+
+.data
+A db 5       
+B db 3       
+
+msg_gt db 'A is greater than B$'
+msg_lt db 'A is less than B$'
+msg_eq db 'A is equal to B$'
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov al, A       
+    mov bl, B       
+
+    cmp al, bl      
+    ja greater      
+    jb less         
+    je equal        
+
+greater:
+    mov dx, offset msg_gt
+    jmp print
+
+less:
+    mov dx, offset msg_lt
+    jmp print
+
+equal:
+    mov dx, offset msg_eq
+
+print:
+    mov ah, 09h
+    int 21h
+
+    mov ah, 4ch
+    int 21h
+
+end main
+
+Task#02
+.model small
+.stack 100h
+.data
+msg_zero db 'The number is zero.$'
+msg_pos  db 'The number is positive.$'
+msg_invalid db 'Invalid input. Please enter a digit from 0 to 9.$'
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    mov ah, 01h        
+    int 21h            
+
+    cmp al, '0'
+    jl invalid_input   
+    cmp al, '9'
+    jg invalid_input   
+
+    cmp al, '0'
+    je is_zero         
+
+    mov dx, offset msg_pos
+    jmp print_msg
+
+is_zero:
+    mov dx, offset msg_zero
+    jmp print_msg
+
+invalid_input:
+    mov dx, offset msg_invalid
+
+print_msg:
+    mov ah, 09h
+    int 21h
+
+    mov ah, 4ch
+    int 21h
+
+end main
+
+Task#03
+.model small
+.stack 100h
+
+.data
+msg_even db 'The number is even.$'
+msg_odd  db 'The number is odd.$'
+msg_invalid db 'Invalid input. Please enter a digit.$'
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov ah, 01h        
+    int 21h            
+
+    cmp al, '0'
+    jl invalid_input
+    cmp al, '9'
+    jg invalid_input
+
+    ; convert ASCII to number
+    sub al, '0'        
+
+    mov ah, 0          
+    mov bl, 2
+    div bl             
+
+    cmp ah, 0
+    je is_even
+       
+    mov dx, offset msg_odd
+    jmp print_msg
+
+is_even:
+    mov dx, offset msg_even
+    jmp print_msg
+
+invalid_input:
+    mov dx, offset msg_invalid
+
+print_msg:
+    mov ah, 09h
+    int 21h
+
+    ; exit
+    mov ah, 4ch
+    int 21h
+
+end main
+
+Task#04
+.model small
+.stack 100h
+
+.data
+msg_need db 'Need hard work.$'
+msg_sat  db 'Satisfactory.$'
+msg_invalid db 'Invalid input. Enter a digit (0-9).$'
+
+.code
+main:                     
+    mov ax, @data
+    mov ds, ax
+
+    mov ah, 01h
+    int 21h              
+
+    cmp al, '0'
+    jl invalid_input
+    cmp al, '9'
+    jg invalid_input
+
+    sub al, '0'           
+    cmp al, 5
+    jl need_hard_work
+
+    mov dx, offset msg_sat
+    jmp print_msg
+          
+    mov dx, offset msg_need
+    jmp print_msg
+            
+    mov dx, offset msg_invalid
+               
+    mov ah, 09h
+    int 21h
+
+    mov ah, 4ch
+    int 21h
+
+end main
