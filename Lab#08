@@ -1,0 +1,211 @@
+TASK 1:
+.model small
+.stack 100h
+.data
+    oddNumbers db 1, 3, 5, 7, 9    
+    
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    ; print newline
+    mov ah, 02h
+    mov dl, 13       ; carriage return
+    int 21h
+    mov dl, 10       ; line feed
+    int 21h
+
+    ; printing numbers
+    mov si, 0              ; index for oddNumbers array
+
+print_loop:
+    mov al, oddNumbers[si] ; get number
+    add al, '0'            ; convert to ASCII
+    mov dl, al
+    mov ah, 02h
+    int 21h                ; print digit
+
+    ; print space
+    mov dl, ' '
+    int 21h
+
+    inc si
+    cmp si, 5
+    jne print_loop
+
+    ; exit program
+    mov ah, 4Ch
+    int 21h
+end main
+
+TASK 2:
+.model small
+.stack 100h
+.data
+    evenNumbers db 8, 6, 4, 2, 0   
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    ; print newline
+    mov ah, 02h
+    mov dl, 13       ; carriage return
+    int 21h
+    mov dl, 10       ; line feed
+    int 21h
+
+    ; print numbers
+    mov si, 0        ; index for evenNumbers array
+
+print_loop:
+    mov al, evenNumbers[si] ; get number
+    add al, '0'             ; convert to ASCII
+    mov dl, al
+    mov ah, 02h
+    int 21h                 ; print digit
+
+    ; print space
+    mov dl, ' '
+    int 21h
+
+    inc si
+    cmp si, 5
+    jne print_loop
+
+    ; exit program
+    mov ah, 4Ch
+    int 21h
+end main
+
+TASK 3:
+.model small
+.stack 100h
+
+.data
+    result db 0    ; Variable to store the result
+
+.code
+main:
+    ; Initialize data segment
+    mov ax, @data
+    mov ds, ax
+
+    ; First number is 1
+    mov al, 1        ; AL = 1
+
+    ; Add second number (2) to AL
+    add al, 2         ; AL = AL + 2 (AL = 3)
+
+    ; Add third number (3) to AL
+    add al, 3         ; AL = AL + 3 (AL = 6)
+
+    ; Store the result in the 'result' variable
+    mov [result], al  ; Store the result in 'result'
+
+    ; Convert the result to ASCII (add '0' to it)
+    add al, '0'       ; Convert to ASCII (6 + '0' = '6')
+
+    ; Print the result
+    mov ah, 02h       ; DOS function to print a character
+    mov dl, al        ; Move result to DL
+    int 21h           ; Interrupt to print the character
+
+    ; Exit the program
+    mov ah, 4Ch
+    int 21h
+
+end main
+
+TASK 4:
+.model small
+.stack 100h
+.data
+    newline db 0Dh, 0Ah, '$'   ; Carriage return and line feed for new line
+    
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+   
+
+    ; Read a single character from user
+    mov ah, 01h
+    int 21h
+    mov bl, al       ; Store the input character in BL
+
+    mov cx, 10       ; Set loop counter to 10
+
+print_loop:
+    ; Print newline
+    lea dx, newline
+    mov ah, 09h
+    int 21h
+
+    ; Print the character
+    mov dl, bl
+    mov ah, 02h
+    int 21h
+
+    loop print_loop  ; Decrement CX and repeat if not zero
+
+    ; Exit program
+    mov ah, 4Ch
+    int 21h
+end main
+
+TASK 5:
+.model small
+.stack 100h
+.code
+main proc
+    mov dl, 'a'
+print_loop:
+    ; Print the character in DL
+    mov ah, 02h     
+    int 21H
+    ; Increment DL to the next letter
+    inc dl           
+    cmp dl, 'z'  
+    jle print_loop   
+
+    ; Exit program
+    mov ah, 4Ch
+    int 21h
+
+end main
+
+TASK 6:
+.model small
+.stack 100h
+.data
+    newline db 13,10,'$'  ; New line
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov bl, 9          ; Start from 9
+
+print_loop:
+    mov al, bl
+    add al, '0'        ; Convert number to ASCII
+    mov dl, al
+    mov ah, 02h
+    int 21h            ; Print the number
+
+    ; Print newline
+    lea dx, newline
+    mov ah, 09h
+    int 21h
+
+    dec bl             ; Decrease number
+    cmp bl, 0FFh       ; Check if BL < 0 (unsigned underflow)
+    jns print_loop     ; Jump if BL >= 0
+
+    ; Exit
+    mov ah, 4Ch
+    int 21h
+
+end main
