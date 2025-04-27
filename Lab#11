@@ -1,0 +1,220 @@
+Task#01:
+.model small
+.stack 100h
+.data
+    arr db 10 dup(?)         
+    msg db 'Enter 10 digits: $'
+    newline db 13,10,'$'
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    lea dx, msg
+    mov ah, 09h
+    int 21h
+    mov cx, 10
+    mov si, 0
+input_loop:
+    mov ah, 01h        
+    int 21h
+    sub al, '0'         
+    mov arr[si], al     
+    inc si
+    loop input_loop
+    lea dx, newline
+    mov ah, 09h
+    int 21h
+    mov cx, 10
+    mov si, 0
+push_loop:
+    mov al, arr[si]
+    push ax             
+    inc si
+    loop push_loop
+    mov ah, 4ch
+    int 21h
+end main
+
+Task#02:
+.model small
+.stack 100h
+.data
+    arr db 5 dup(?)             ; Array to store 5 digits
+    msg db 'Enter 5 digits from 0 to 9 : $'
+    newline db 13,10,'Reversed values: $'
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    lea dx, msg
+    mov ah, 09h
+    int 21h
+    mov cx, 5
+    mov si, 0
+input_loop:
+    mov ah, 01h         
+    int 21h
+    sub al, '0'         
+    mov arr[si], al     
+    inc si
+    loop input_loop
+    mov cx, 5
+    mov si, 0
+push_loop:
+    mov al, arr[si]
+    xor ah, ah
+    push ax             
+    inc si
+    loop push_loop
+    mov cx, 5
+    mov si, 0
+pop_loop:
+    pop ax
+    mov arr[si], al
+    inc si
+    loop pop_loop
+    lea dx, newline
+    mov ah, 09h
+    int 21h
+    mov cx, 5  ;reversed array
+    mov si, 0
+display_loop:
+    mov al, arr[si]
+    add al, '0'         
+    mov dl, al
+    mov ah, 02h
+    int 21h
+    inc si
+    loop display_loop
+    mov ah, 4ch
+    int 21h
+end main
+
+Task#03:
+.model small
+.stack 100h
+.data
+    arr db 10 dup(?)             
+    msg1 db 'Enter 10 digits from 0 to 9 : $'
+    msg2 db 13,10,'Values less than 6 and even: $'
+    newline db 13,10,'$'
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    lea dx, msg1         
+    mov ah, 09h
+    int 21h
+    mov cx, 10       ;take input 10 digits
+    mov si, 0
+input_loop:          ;loop name
+    mov ah, 01h
+    int 21h
+    sub al, '0'         
+    mov arr[si], al
+    inc si
+    loop input_loop      
+    mov cx, 10      
+    mov si, 0
+    mov bp, 0            
+push_even_loop:        ;push even numbers
+    mov al, arr[si]
+    mov ah, 0            
+    mov bl, 2
+    div bl               
+    cmp ah, 0
+    jne skip_push       
+    mov al, arr[si]
+    mov ah, 0            
+    push ax
+    inc bp           ;count pushed values    
+skip_push:
+    inc si
+    loop push_even_loop
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+    mov cx, bp      ;pop only even values     
+pop_loop:
+    pop ax
+    cmp al, 6
+    jge skip_display     6
+    add al, '0'
+    mov dl, al
+    mov ah, 02h
+    int 21h
+skip_display:
+    loop pop_loop
+    lea dx, newline
+    mov ah, 09h
+    int 21h
+    mov ah, 4ch
+    int 21h
+end main
+
+Task#04:
+.model small
+.stack 100h
+.data
+    arr db 1, 2, 3, 4, 5       ; Original array
+    msg1 db 'Original arrays are : $'
+    msg2 db 13, 10, 'Reversed arrays are : $'
+    newline db 13, 10, '$'
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+    mov cx, 5
+    mov si, 0
+print_original:
+    mov dl, arr[si]
+    add dl, '0'
+    mov ah, 02h
+    int 21h
+    mov dl, ' '          ; Space between numbers
+    mov ah, 02h
+    int 21h
+    inc si
+    loop print_original
+    lea dx, newline       ;newline
+    mov ah, 09h
+    int 21h
+    mov cx, 5
+    mov si, 0
+push_loop:
+    mov al, arr[si]
+    mov ah, 0
+    push ax
+    inc si
+    loop push_loop
+    mov cx, 5
+    mov si, 0
+pop_loop:
+    pop ax
+    mov arr[si], al
+    inc si
+    loop pop_loop
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+    mov cx, 5
+    mov si, 0
+print_reversed:
+    mov dl, arr[si]
+    add dl, '0'
+    mov ah, 02h
+    int 21h
+    mov dl, ' '
+    mov ah, 02h
+    int 21h
+    inc si
+    loop print_reversed
+    lea dx, newline
+    mov ah, 09h
+    int 21h
+    mov ah, 4ch
+    int 21h
+end main
