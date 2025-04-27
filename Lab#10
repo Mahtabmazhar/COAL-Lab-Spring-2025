@@ -1,0 +1,101 @@
+Task#01:
+.model small
+.stack 100h
+.data
+ arr DB '10','20','30','40','50'
+ .code
+main proc
+    mov ax, @data
+    mov ds, ax
+    mov si,offset arr      ; source index
+    mov cx, 10     ; loop counter
+print_loop:
+    mov dl,[si] 
+    mov ah, 02h     
+    int 21h
+    inc si          
+    loop print_loop
+    mov ah, 4ch     
+    int 21h
+end main
+
+Task#02:
+.model small
+.stack 100h
+.data
+    msg db 'H', 'E', 'L', 'L', 'O'  ; Character array
+    len db 5                        ; Length of array
+.code
+Main proc
+    mov ax, @data
+    mov ds, ax
+    mov si, 0       ; source index
+    mov cx, 5       ; loop counter
+print_loop:
+    mov dl, msg[si] 
+    mov ah, 02h     
+    int 21h
+    inc si          
+    loop print_loop
+    mov ah, 4ch     
+    int 21h
+end main
+
+Task#03:
+.model small
+.stack 100h
+.data
+    arr db 5 dup('#')  ; Creates an array of 5 '#' characters
+.code
+main proc
+ mov ax, @data
+    mov ds, ax
+    mov si, 0       
+    mov cx, 5       
+print_loop:
+    mov dl, arr[si] 
+    mov ah, 02h     
+    int 21h
+    inc si          
+    loop print_loop
+    mov ah, 4ch     
+    int 21h
+end main
+
+Task#04:
+.model small
+.stack 100h
+.data   
+ arr db 5 dup(?)     
+    msg1 db 'Enter 5 characters:$'
+    newline db 13,10,'$'
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+    mov cx, 5           
+    mov si, 0           
+input_loop:
+    mov ah, 01h         
+    int 21h
+    mov arr[si], al     
+    inc si
+    loop input_loop
+
+    lea dx, newline
+    mov ah, 09h
+    int 21h
+    mov cx, 5
+    mov si, 0
+output_loop:
+    mov dl, arr[si]     
+    mov ah, 02h         
+    int 21h
+    inc si
+    loop output_loop
+    mov ah, 4ch
+    int 21h
+end main
