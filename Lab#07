@@ -1,0 +1,237 @@
+Task#01:
+.model small
+.stack 100h
+
+.data
+    msg1 db 'Enter a digit (0-9): $'
+    msg2 db 'Square is: $'
+    result db ? ; to store result
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    ; Display prompt
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+
+    ; Get character input
+    mov ah, 01h
+    int 21h
+    sub al, '0'         ; Convert ASCII to numeric
+    mov bl, al          ; Store number in BL
+    mov al, bl
+    mul bl              ; AL = BL * BL (square), result in AX (but only AL is used here as we expect small numbers)
+
+    ; Convert result to ASCII
+    add al, '0'
+    mov result, al
+
+    ; Print result message
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+
+    ; Display result
+    mov dl, result
+    mov ah, 02h
+    int 21h
+
+    ; Exit
+    mov ah, 4ch
+    int 21h
+end main
+
+Task#02:
+.model small
+.stack 100h
+.data
+    msg1 db 'Enter a single-digit number: $'
+    msg2 db 13,10,'Cube is: $'
+    result db 5 dup('$') ; buffer to store result string
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    ; Display message
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+    ; Read character from user
+    mov ah, 01h
+    int 21h
+    sub al, 30h       ; Convert ASCII to number
+    mov bl, al        ; Store number in BL
+    mov bh, al
+    mul bl            ; AL = AL * BL (number^2)
+    mov bl, al        ; Store square in BL
+    mov al, bh        ; Restore original number
+    mul bl            ; AL = number * number^2 = number^3
+
+    ; Now AL has the cube result (max 729)
+    ; Convert result to string and print
+    ; Convert to ASCII decimal string
+    mov bx, 10
+    xor cx, cx        ; Digit counter
+store_digits:
+    xor dx, dx
+    div bx            ; AX / 10, quotient in AL, remainder in DL
+    add dl, 30h       ; Convert digit to ASCII
+    push dx           ; Store digit on stack
+    inc cx            ; Count digits
+    cmp al, 0
+    jne store_digits
+    ; Display message
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+print_digits:
+    pop dx
+    mov ah, 02h
+    int 21h
+    loop print_digits
+    ; Exit
+    mov ah, 4ch
+    int 21h
+end main
+
+Task#03:
+.model small
+.stack 100h
+.data
+    msg1 db 'Enter first single-digit number: $'
+    msg2 db 13, 10, 'Enter second single-digit number: $'
+    msg3 db 13, 10, 'Product is: $'
+    result db 5 dup('$') ; buffer to store result string
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+    ; Ask for first number
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+    
+    mov ah, 01h         ; Read first character
+    int 21h
+    sub al, 30h         ; Convert ASCII to number
+    mov bl, al          ; Store in BL
+
+    ; Ask for second number
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h         ; Read second character
+    int 21h
+    sub al, 30h         ; Convert ASCII to number
+    mov bh, al          ; Store in BH
+
+    ; Multiply BL * BH
+    mov al, bl
+    mul bh              ; AL * BH ? AX (result in AX)
+
+    ; Convert result in AX to ASCII string
+    mov bx, 10
+    xor cx, cx          ; Clear digit counter
+
+store_digits:
+    xor dx, dx
+    div bx              ; AX / 10, quotient in AX, remainder in DX
+    add dl, 30h         ; Convert remainder to ASCII
+    push dx             ; Store digit
+    inc cx              ; Increment digit counter
+    cmp ax, 0
+    jne store_digits
+
+    ; Display result message
+    lea dx, msg3
+    mov ah, 09h
+    int 21h
+
+print_digits:
+    pop dx
+    mov ah, 02h
+    int 21h
+    loop print_digits
+
+    ; Exit
+    mov ah, 4Ch
+    int 21h
+end main
+
+Task#04:
+.model small
+.stack 100h
+.data
+    msg1 db 'Enter base: $'
+    msg2 db 13, 10, 'Enter height: $'
+    msg3 db 13, 10, 'Area of triangle is: $'
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    ; Ask for base
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h        ; Read base
+    int 21h
+    sub al, 30h        ; Convert ASCII to number
+    mov bl, al         ; Store base in BL
+
+    ; Ask for height
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h        ; Read height
+    int 21h
+    sub al, 30h        ; Convert ASCII to number
+    mov bh, al         ; Store height in BH
+
+    ; Multiply base * height
+    mov al, bl
+    mul bh             ; AL * BH ? result in AX
+
+    ; Divide product by 2 for area = ½ * base * height
+    mov bl, 2
+    div bl             ; AX / 2 ? Quotient in AL (area)
+
+    ; Convert result in AL to ASCII string
+    ; We'll use division to extract digits
+    mov ah, 0
+    mov cx, 0
+    mov bx, 10
+
+store_digits:
+    xor dx, dx
+    div bx             ; AL / 10 ? AL=quotient, DL=remainder
+    add dl, 30h        ; Convert to ASCII
+    push dx
+    inc cx
+    cmp al, 0
+    jne store_digits
+
+    ; Show result message
+    lea dx, msg3
+    mov ah, 09h
+    int 21h
+
+print_digits:
+    pop dx
+    mov ah, 02h
+    int 21h
+    loop print_digits
+
+    ; Exit program
+    mov ah, 4Ch
+    int 21h
+end main
