@@ -1,0 +1,60 @@
+Give answers of the following questions
+
+   1. Describe the function of each:
+•	Accumulator Register (A, AX, EAX, RAX)
+•	Base Register (B, BX, EBX, RBX)
+•	Count Register (C, CX, ECX, RCX)
+•	Data Register (D, DX, EDX, RDX)
+ 
+•	Accumulator Register (A, AX, EAX, RAX)
+	It is used to store the data, transfer the data in registers and also used for input and output operations between memory and processor.
+A=8bits
+AX=16bits
+EAX=32bits
+RAX=64bits
+•	Base Register (B, BX, EBX, RBX)
+	Base registers is used to store the address of the saved data in RAM.
+B=8bits
+BX=16bits
+EBX=32bits
+RBX=64bits
+
+•	Count Register (C, CX, ECX, RCX)
+	It is used to store the number of operations by loop or also used as checksum operator that how many times program iterate and how many times it execute more.
+C=8bits
+CX=16bits
+ECX=32bits
+RCX=64bits
+
+•	Data Register (D, DX, EDX, RDX)
+	It is used to store the data or holding the data in input and output forms.
+
+2.	Describe the role of index registers in source and destination operations. Provide an example using SI and DI in an assembly instruction?
+
+	Index registers, such as SI (Source Index) and DI (Destination Index), are used for addressing memory and locations (destination).
+      SI (Source Index): Often used to point to the source operand.
+     DI (Destination Index): Used to point to the destination operand.
+    MOV SI, [source]; Load the source address into SI
+   MOV DI, [destination]; Load the destination address into DI
+
+3.	Briefly describe the functions of these bits:
+•	Overflow Flag (OF)
+•	Zero Flag (ZF)
+•	Carry Flag (CF)
+
+•	Overflow Flag (OF)
+	It indicates a result that exceeds the operand size (e.g., when adding two large positive numbers results in a negative value). It helps detect overflow in signed integer operations.
+•	Zero Flag (ZF)
+	It is set if the result of an operation is zero. It is commonly used in loops to check if a result is zero after an operation.
+•	Carry Flag (CF)
+	It indicates whether an operation has resulted in a carry or borrow. It is often used for unsigned to detect overflow in addition or subtraction operations. For example, a carry in addition indicates that the result exceeded.
+
+4.	Write a simple program using MOV, ADD, and SUB instructions:
+•	Move values to registers
+•	Perform addition and subtraction
+•	Store and display results
+MOV DL, 8; move value into DL, DL = 8
+MOV AL, 2; move value into AL, AL = 2
+ADD DL, AL; add 8+2, DL = 10
+MOV AL, 5; AL = 5
+SUB DL, AL; DL = 10-5=5
